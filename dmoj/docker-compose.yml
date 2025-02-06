@@ -1,7 +1,7 @@
-version: '3.7'
+version: "3.7"
 services:
   db:
-    container_name: vnoj_mysql
+    container_name: tgboj_mysql
     image: mariadb
     restart: unless-stopped
     volumes:
@@ -11,7 +11,7 @@ services:
     #ports:
     #  - 3306:3306
   redis:
-    container_name: vnoj_redis
+    container_name: tgboj_redis
     image: redis:alpine
     restart: unless-stopped
     networks: [site]
@@ -24,7 +24,7 @@ services:
     image: vnoj/vnoj-base
     network_mode: none
   site:
-    container_name: vnoj_site
+    container_name: tgbj_site
     build:
       context: .
       dockerfile: ./site/Dockerfile
@@ -40,11 +40,12 @@ services:
       - ./problems/:/problems/
       - ./repo/:/site/
     working_dir: /site/
-    env_file: [environment/mysql.env, environment/site.env]
+    env_file:
+      [environment/mysql.env, environment/site.env, environment/email.env]
     networks: [site, nginx, db]
     depends_on: [base, db, redis]
   celery:
-    container_name: vnoj_celery
+    container_name: tgboj_celery
     build:
       context: .
       dockerfile: ./celery/Dockerfile
@@ -60,7 +61,7 @@ services:
     networks: [site, db]
     depends_on: [base, db, redis]
   bridged:
-    container_name: vnoj_bridged
+    container_name: tgboj_bridged
     build:
       context: .
       dockerfile: ./bridged/Dockerfile
@@ -78,7 +79,7 @@ services:
       - 9998:9998
       - 9999:9999
   wsevent:
-    container_name: vnoj_wsevent
+    container_name: tgboj_wsevent
     build:
       context: .
       dockerfile: ./wsevent/Dockerfile
@@ -96,11 +97,14 @@ services:
     #  - 15101:15101
     #  - 15102:15102
   nginx:
-    container_name: vnoj_nginx
-    image: nginx:alpine
+    container_name: tgboj_nginx
+    build:
+      context: .
+      dockerfile: ./nginx/Dockerfile
     restart: unless-stopped
     ports:
       - 80:80
+      - 443:443
     volumes:
       - assets:/assets/
       - userdatacache:/userdatacache/

@@ -1,4 +1,4 @@
-# VNOJ Docker
+# TGBOJ-v2 Docker
 
 This repository contains the Docker files to run the [TGBOJ-v2](https://github.com/TGB-Dev/tgboj-v2)
 
