@@ -105,7 +105,7 @@ EMAIL_PORT = 587
 
 # A tuple of (name, email) pairs that specifies those who will be mailed
 # when the server experiences an error when DEBUG = False.
-ADMINS = ("TGB IID", "iid@giftedbat.edu.vn")
+ADMINS = (("TGB IID", "iid@giftedbat.edu.vn"),)
 
 # The sender for the aforementioned emails.
 SERVER_EMAIL = os.environ.get(
