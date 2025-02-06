@@ -76,8 +76,8 @@ services:
     networks: [site, nginx, db]
     depends_on: [base, db, redis]
     ports:
-      - 9998:9998
       - 9999:9999
+      - 10000:10000
   wsevent:
     container_name: tgboj_wsevent
     build:
