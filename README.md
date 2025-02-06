@@ -132,3 +132,11 @@ $ docker compose restart site celery bridged wsevent
 ```
 
 More advanced NGINX setup truncated for ease of deploy. Please see [the original README.md file](https://github.com/VNOI-Admin/vnoj-docker/blob/master/README.md) if needed.
+
+### Certbot
+
+Certbot is pre-installed inside the NGINX container.
+
+```sh
+$ certbot --nginx
+```
