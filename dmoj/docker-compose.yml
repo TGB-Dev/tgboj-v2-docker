@@ -7,8 +7,8 @@ services:
       - ./database/:/var/lib/mysql/
     env_file: [environment/mysql.env, environment/mysql-admin.env]
     networks: [db]
-    #ports:
-    #  - 3306:3306
+    ports:
+      - 3306:3306
   redis:
     container_name: tgboj_redis
     image: redis:alpine
@@ -20,14 +20,14 @@ services:
     build:
       context: .
       dockerfile: ./base/Dockerfile
-    image: vnoj/vnoj-base
+    image: tgboj/tgboj-base
     network_mode: none
   site:
     container_name: tgboj_site
     build:
       context: .
       dockerfile: ./site/Dockerfile
-    image: vnoj/vnoj-site
+    image: tgboj/tgboj-site
     init: true
     restart: unless-stopped
     volumes:
@@ -41,14 +41,14 @@ services:
     working_dir: /site/
     env_file:
       [environment/mysql.env, environment/site.env, environment/email.env]
-    networks: [site, nginx, db]
+    networks: [site, caddy, db]
     depends_on: [base, db, redis]
   celery:
     container_name: tgboj_celery
     build:
       context: .
       dockerfile: ./celery/Dockerfile
-    image: vnoj/vnoj-celery
+    image: tgboj/tgboj-celery
     init: true
     restart: unless-stopped
     volumes:
@@ -64,7 +64,7 @@ services:
     build:
       context: .
       dockerfile: ./bridged/Dockerfile
-    image: vnoj/vnoj-bridged
+    image: tgboj/tgboj-bridged
     init: true
     restart: unless-stopped
     volumes:
@@ -72,7 +72,7 @@ services:
       - ./repo/:/site/
     working_dir: /site/
     env_file: [environment/mysql.env, environment/site.env]
-    networks: [site, nginx, db]
+    networks: [site, caddy, db]
     depends_on: [base, db, redis]
     ports:
       - 9999:9999
@@ -82,43 +82,48 @@ services:
     build:
       context: .
       dockerfile: ./wsevent/Dockerfile
-    image: vnoj/vnoj-wsevent
+    image: tgboj/tgboj-wsevent
     init: true
     restart: unless-stopped
     volumes:
       - ./repo/:/app/site/
     working_dir: /app/site
     env_file: [environment/mysql.env, environment/site.env]
-    networks: [site, nginx]
+    networks: [site, caddy]
     depends_on: [base]
     #ports:
     #  - 15100:15100
     #  - 15101:15101
     #  - 15102:15102
-  nginx:
-    container_name: tgboj_nginx
+  caddy:
+    container_name: tgboj_caddy
     build:
       context: .
-      dockerfile: ./nginx/Dockerfile
+      dockerfile: ./caddy/Dockerfile
+    image: tgboj/tgboj-caddy
     restart: unless-stopped
     ports:
-      - 80:80
-      - 443:443
+      - 6000:80
+      - 6001:443
     volumes:
       - assets:/assets/
       - userdatacache:/userdatacache/
       - contestdatacache:/contestdatacache/
       - cache:/cache/
       - ./media/:/media/
-      - ./nginx/conf.d/:/etc/nginx/conf.d/
-    networks: [nginx]
+      - ./caddy/config:/etc/caddy/
+      - caddy_data:/data
+      - caddy_config:/config
+    networks: [caddy]
     depends_on: [site, wsevent]
 networks:
   site:
   db:
-  nginx:
+  caddy:
 volumes:
   assets:
   userdatacache:
   contestdatacache:
   cache:
+  caddy_data:
+  caddy_config:
