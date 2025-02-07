@@ -103,8 +103,8 @@ services:
     image: tgboj/tgboj-caddy
     restart: unless-stopped
     ports:
-      - 6000:80
-      - 6001:443
+      - 80:80
+      - 443:443
     volumes:
       - assets:/assets/
       - userdatacache:/userdatacache/
