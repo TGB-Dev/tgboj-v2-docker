@@ -7,4 +7,4 @@ RUN ARCH=$([ $(uname -m) = "x86_64" ] && echo "amd64" || echo "arm64") && \
 
 EXPOSE 8000
 
-ENTRYPOINT uwsgi --ini uwsgi.ini
+ENTRYPOINT ["uwsgi", "--ini", "uwsgi.ini"]

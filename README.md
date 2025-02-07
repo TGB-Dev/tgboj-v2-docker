@@ -32,7 +32,7 @@ cp environment/site.env.example environment/site.env
 cp environment/email.env.example environment/email.env
 ```
 
-Then, set the MYSQL passwords in `mysql.env` and `mysql-admin.env`, and the host and secret key in `site.env`. Also, configure the `server_name` directive in `dmoj/nginx/conf.d/nginx.conf`.
+Then, set the MYSQL passwords in `mysql.env` and `mysql-admin.env`, and the host and secret key in `site.env`.
 
 Next, build the images:
 
@@ -132,12 +132,8 @@ If only the source code is modified, a restart is sufficient:
 docker compose restart site celery bridged wsevent
 ```
 
-More advanced NGINX setup truncated for ease of deploy. Please see [the original README.md file](https://github.com/VNOI-Admin/vnoj-docker/blob/master/README.md) if needed.
+### Caddy
 
-### Certbot
+We use Caddy because of its ease of config.
 
-Certbot is pre-installed inside the NGINX container.
-
-```sh
-$ certbot --nginx
-```
+Remember to change the website's URL in `dmoj/caddy/config/Caddyfile` for Caddy to automatically get the HTTPS certificate.

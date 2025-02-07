@@ -82,21 +82,10 @@ localhost {
 	}
 
 	route /event/* {
-		reverse_proxy wsevent:15100 {
-			header_up Connection "upgrade"
-			header_up Upgrade {http.upgrade}
-			transport http {
-				versions 1.1
-				read_timeout 86400s
-			}
-		}
+		reverse_proxy wsevent:15100
 	}
 
 	route /channels/* {
-		reverse_proxy wsevent:15102 {
-			transport http {
-				read_timeout 120s
-			}
-		}
+		reverse_proxy wsevent:15102
 	}
 }
