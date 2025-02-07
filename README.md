@@ -12,7 +12,7 @@ Clone the repository:
 
 ```sh
 git clone --recursive https://github.com/TGB-Dev/tgboj-v2-docker.git
-cd vnoj-docker/dmoj
+cd tgboj-v2-docker/dmoj
 ```
 
 From now on, it is assumed you are in the `dmoj` directory.
