@@ -293,6 +293,19 @@ LOGGING = {
         },
     },
     "handlers": {
+        # You may use this handler as an example for logging to other files.
+        "bridge": {
+            "level": "INFO",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": "/var/log/tgboj_briged.log",
+            "maxBytes": 10 * 1024 * 1024,
+            "backupCount": 10,
+            "formatter": "file",
+        },
+        "mail_admins": {
+            "level": "ERROR",
+            "class": "dmoj.throttle_mail.ThrottledEmailHandler",
+        },
         "console": {
             "level": "DEBUG",
             "class": "logging.StreamHandler",
@@ -300,6 +313,18 @@ LOGGING = {
         },
     },
     "loggers": {
+        # Site 500 error mails.
+        "django.request": {
+            "handlers": ["mail_admins"],
+            "level": "ERROR",
+            "propagate": False,
+        },
+        # Judging logs as received by bridged.
+        "judge.bridge": {
+            "handlers": ["bridge", "mail_admins"],
+            "level": "INFO",
+            "propagate": True,
+        },
         # Catch all logs to stderr.
         "": {
             "handlers": ["console"],
