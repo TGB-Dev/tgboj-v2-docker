@@ -66,7 +66,7 @@ You will also need to generate the static files:
 ./scripts/copy_static
 ```
 
-Finally, the VNOJ comes with fixtures so that the initial install is not blank. They can be loaded with the following commands:
+Finally, the TGBOJ comes with fixtures so that the initial install is not blank. They can be loaded with the following commands:
 
 ```sh
 ./scripts/manage.py loaddata navbar
@@ -108,7 +108,7 @@ The bridge instance is included in this Docker setup and should be running once 
 
 ### Migrating
 
-As the VNOJ site is a Django app, you may need to migrate whenever you update. Assuming the site container is running, running the following command should suffice:
+As the TGBOJ site is a Django app, you may need to migrate whenever you update. Assuming the site container is running, running the following command should suffice:
 
 ```sh
 ./scripts/migrate
@@ -144,4 +144,5 @@ docker compose restart site celery bridged wsevent
 
 We use Caddy because of its ease of config.
 
-Remember to change the website's URL in `dmoj/caddy/config/Caddyfile` for Caddy to automatically get the HTTPS certificate.
+> [!IMPORTANT]
+> Remember to change the website's URL in `dmoj/caddy/config/Caddyfile` for Caddy to automatically get the HTTPS certificate.
