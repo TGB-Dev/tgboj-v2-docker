@@ -1,7 +1,7 @@
 services:
   db:
     container_name: tgboj_mysql
-    image: mariadb
+    image: mariadb:10
     restart: unless-stopped
     volumes:
       - ./database/:/var/lib/mysql/
