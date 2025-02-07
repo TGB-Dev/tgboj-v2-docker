@@ -17,6 +17,13 @@ cd vnoj-docker/dmoj
 
 From now on, it is assumed you are in the `dmoj` directory.
 
+> [!NOTE]
+> The following steps should be done in the specified order to prevent conflicts and/or random issues, so read the whole `README.md` file first, then start the process.
+
+> [!IMPORTANT]
+> Remember to change the `SECRET_KEY` inside the `dmoj/config/local_settings.py`. For some reason, only that variable has issue when loaded via environment files, so hardcoding is the only stable way to workaround that.
+> This should be done before moving to next steps.
+
 Initialize the setup by moving the configuration files into the submodule and creating the necessary directories:
 
 ```sh
