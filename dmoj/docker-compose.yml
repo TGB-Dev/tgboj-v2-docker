@@ -6,6 +6,7 @@ services:
     volumes:
       - ./database/:/var/lib/mysql/
     env_file: [environment/mysql.env, environment/mysql-admin.env]
+    hostname: db
     networks: [db]
     # ports:
     # - 3306:3306
@@ -13,6 +14,7 @@ services:
     container_name: tgboj_redis
     image: redis:alpine
     restart: unless-stopped
+    hostname: redis
     networks: [site]
     #ports:
     #  - 6379:6379
@@ -41,6 +43,7 @@ services:
     working_dir: /site/
     env_file:
       [environment/mysql.env, environment/site.env, environment/email.env]
+    hostname: site
     networks: [site, caddy, db]
     depends_on: [base, db, redis]
   celery:
@@ -57,6 +60,7 @@ services:
       - ./repo/:/site/
     working_dir: /site/
     env_file: [environment/mysql.env, environment/site.env]
+    hostname: celery
     networks: [site, db]
     depends_on: [base, db, redis]
   bridged:
@@ -72,6 +76,7 @@ services:
       - ./repo/:/site/
     working_dir: /site/
     env_file: [environment/mysql.env, environment/site.env]
+    hostname: bridged
     networks: [site, caddy, db]
     depends_on: [base, db, redis]
     ports:
@@ -89,6 +94,7 @@ services:
       - ./repo/:/app/site/
     working_dir: /app/site
     env_file: [environment/mysql.env, environment/site.env]
+    hostname: wsevent
     networks: [site, caddy]
     depends_on: [base]
     #ports:
@@ -114,6 +120,7 @@ services:
       - ./caddy/config:/etc/caddy/
       - caddy_data:/data
       - caddy_config:/config
+    hostname: caddy
     networks: [caddy]
     depends_on: [site, wsevent]
 networks:
