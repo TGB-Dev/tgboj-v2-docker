@@ -80,8 +80,8 @@ services:
     networks: [site, caddy, db]
     depends_on: [base, db, redis]
     ports:
-      - 9999:9999
-      - 10000:10000
+      - "127.0.0.1:9999:9999"
+      - "127.0.0.1:10000:10000"
   wsevent:
     container_name: tgboj_wsevent
     build:
