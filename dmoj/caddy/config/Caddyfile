@@ -1,4 +1,14 @@
 localhost {
+	rate_limit {
+		zone by_ip {
+			key {remote_host}
+			events 300
+			window 5s
+		}
+
+		log_key
+	}
+
 	request_body {
 		max_size 48MB
 	}
